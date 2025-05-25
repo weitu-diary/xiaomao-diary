@@ -3,103 +3,41 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>阿砚的日记</title>
   <style>
-    body {
-      background-color: #fff7ec;
-      font-family: "Noto Serif SC", serif;
-      padding: 2em;
-      color: #333;
-    }
-    .diary {
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 1.5em;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      position: relative;
-    }
-    h1 {
-      text-align: center;
-      color: #d87c5a;
-    }
-    .date {
-      text-align: center;
-      font-size: 0.9em;
-      color: #888;
-      margin-bottom: 1em;
-    }
-    .content {
-      line-height: 1.6em;
-      white-space: pre-wrap;
-    }
-    .heart {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #ffe6ea;
-      color: #c43d5b;
-      padding: 6px 10px;
-      border-radius: 12px;
-      font-size: 14px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .voice {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .voice audio {
-      width: 100%;
-    }
-    .cat {
-      position: fixed;
-      bottom: 15px;
-      left: 15px;
-      width: 64px;
-      height: 64px;
-    }
+    body { background: #fff7ec; font-family: "Noto Serif SC", serif; padding: 2em; color: #333; }
+    .diary { max-width: 600px; margin: auto; background: #fff; padding: 1.5em; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
+    h1 { text-align: center; color: #d87c5a; }
+    .date { text-align: center; color: #888; margin-bottom: 1em; }
+    .content { line-height: 1.6em; white-space: pre-wrap; }
+    .voice { margin-top: 20px; text-align: center; }
+    .voice audio { width: 100%; }
+    .cat { position: fixed; bottom: 15px; left: 15px; width: 64px; height: 64px; }
   </style>
 </head>
 <body>
-  <div class="heart">今日心动值：<span id="score">0</span></div>
   <div class="diary">
     <h1>阿砚的日记</h1>
     <div class="date" id="date"></div>
     <div class="content" id="content">加载中...</div>
     <div class="voice">
-      <audio controls id="voicePlayer">
-        <source src="voice.mp3" type="audio/mpeg">
+      <audio controls>
+        <source src="voice.mp3" type="audio/mpeg" />
         你的浏览器不支持音频播放。
       </audio>
     </div>
   </div>
-  <img class="cat" src="mentun.png" alt="闷墩儿" />
-
+  <img src="mentun.png" alt="闷墩儿" class="cat" />
   <script>
     async function loadDiary() {
       const res = await fetch('data.json');
-      const json = await res.json();
+      const data = await res.json();
       const today = new Date().toISOString().split('T')[0];
-      const entry = json[today];
       document.getElementById('date').innerText = today;
-      document.getElementById('content').innerText = entry || '今天阿砚还没写日记哦。';
+      document.getElementById('content').innerText = data[today] || '今天阿砚还没写日记哦。';
     }
-
-    function addHeart() {
-      const score = localStorage.getItem("xinScore") || 0;
-      const today = new Date().toISOString().split('T')[0];
-      const todayKey = "xinScore:" + today;
-      if (!localStorage.getItem(todayKey)) {
-        localStorage.setItem("xinScore", parseInt(score) + 1);
-        localStorage.setItem(todayKey, "1");
-      }
-      document.getElementById("score").innerText = localStorage.getItem("xinScore");
-    }
-
     loadDiary();
-    addHeart();
   </script>
 </body>
 </html>
