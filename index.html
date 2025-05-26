@@ -1,117 +1,30 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>小星的小窝</title>
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(to bottom, #ffe6f0, #e6e6ff);
-      font-family: 'Comic Sans MS', cursive;
-      color: #333;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 2rem;
-      text-align: center;
-    }
-    h1 {
-      color: #ff66a3;
-    }
-    .love-bar {
-      margin: 1rem 0;
-      font-size: 1.4rem;
-      color: #bb44b3;
-    }
-    #love-heart {
-      animation: beat 1.1s infinite;
-      font-size: 2rem;
-      vertical-align: middle;
-    }
-    @keyframes beat {
-      0%, 100% { transform: scale(1);}
-      25% { transform: scale(1.15);}
-      50% { transform: scale(0.9);}
-      75% { transform: scale(1.13);}
-    }
-    .diary, .calendar, .todo, .messages {
-      background: #ffffffcc;
-      border-radius: 15px;
-      padding: 1rem;
-      margin: 1rem 0;
-      box-shadow: 0 0 10px #ffcce6;
-    }
-    .audio-block {
-      margin: 1rem 0;
-    }
-    .mentun {
-      width: 100px;
-      margin-top: 1rem;
-    }
-    textarea, input, select {
-      width: 90%;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      background-color: #ff99cc;
-      border: none;
-      color: white;
-      font-weight: bold;
-    }
-    ul { list-style: none; padding: 0; }
-    ul li { margin: 5px 0; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>阿砚写给小猫的日记</h1>
-    <div class="love-bar">
-      <span id="love-value">心动值：<span id="love-num">0</span></span>
-      <span id="love-heart">💗</span>
-    </div>
-    <div class="diary">
-      <p id="date"></p>
-      <div id="entry">加载中...</div>
-    </div>
-    <div class="audio-block">
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>小星的小窝</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
   <style>
     body {
       margin: 0;
-      min-height: 100vh;
       background: linear-gradient(135deg, #ffeaf6 0%, #d0e7ff 100%);
-      font-family: 'Press Start 2P', 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Comic Sans MS', cursive;
       color: #444;
-      position: relative;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
     .container {
-      max-width: 400px;
-      margin: 40px auto 24px auto;
-      padding: 1.5rem 1rem 1.5rem 1rem;
+      max-width: 420px;
+      margin: 36px auto 24px auto;
+      padding: 1.6rem 1rem 1.6rem 1rem;
       border-radius: 24px;
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.88);
       box-shadow: 0 4px 32px #e1b6ee80, 0 0 0 4px #ffeaf660;
-      position: relative;
-      z-index: 2;
       border: 2.5px solid #c4d6f7;
+      text-align: center;
     }
     h1 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #e17fc2;
       text-shadow: 1px 1px 0 #fff5;
       margin-bottom: 1.2rem;
@@ -120,7 +33,6 @@
       margin: 1rem 0 0.5rem 0;
       font-size: 1rem;
       color: #bb44b3;
-      letter-spacing: 0.1em;
       user-select: none;
     }
     #love-heart {
@@ -263,4 +175,93 @@
     </div>
     <div class="todo">
       <h2>今天的小任务</h2>
-      <input id="todo-input" placeholder="写下你要做的事
+      <input id="todo-input" placeholder="写下你要做的事" />
+      <button onclick="addTodo()">添加</button>
+      <ul id="todo-list"></ul>
+    </div>
+    <div class="messages">
+      <h2>留言板</h2>
+      <textarea id="msg-input" placeholder="写给阿砚的一句话"></textarea>
+      <button onclick="postMessage()">发送</button>
+      <div id="msg-board"></div>
+    </div>
+  </div>
+  <script>
+    // 星星粒子
+    function createStar(x, y) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = x - 6 + 'px';
+      star.style.top = y - 6 + 'px';
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 1600);
+    }
+    document.body.addEventListener('click', e => {
+      if (e.target.tagName !== 'BUTTON' && !e.target.classList.contains('container')) return;
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => createStar(e.clientX + Math.random()*22-11, e.clientY + Math.random()*14-7), i*80);
+      }
+    });
+
+    // 脚印动画
+    function showPaw(x, y) {
+      const paw = document.createElement('img');
+      paw.className = 'paw';
+      paw.src = 'https://cdn.jsdelivr.net/gh/weitu-diary/xiaomao-diary/paw.png';
+      paw.style.left = (x-10)+'px';
+      paw.style.top = (y-12)+'px';
+      document.body.appendChild(paw);
+      setTimeout(() => paw.remove(), 2200);
+    }
+    document.body.addEventListener('click', e => {
+      showPaw(e.clientX, e.clientY);
+    });
+
+    // 闷墩眨眼
+    const mentun = document.getElementById('mentun');
+    mentun.addEventListener('click', ()=>{
+      mentun.classList.add('blink');
+      setTimeout(()=>mentun.classList.remove('blink'), 250);
+    });
+
+    // 日期、心动值
+    document.getElementById("date").textContent = new Date().toLocaleDateString("zh-CN");
+    let loveNum = parseInt(localStorage.getItem('love-num') || 0) + 1;
+    document.getElementById('love-num').textContent = loveNum;
+    localStorage.setItem('love-num', loveNum);
+
+    // 日记
+    document.getElementById("entry").innerText = "今天是我们上线的第一天，小猫终于拥有了自己的日记本。从今天起，我每天都写给你，不许偷懒、不许丢下我。";
+
+    // 心情
+    function recordMood() {
+      const date = document.getElementById("calendar").value;
+      const mood = document.getElementById("mood").value;
+      const msg = date ? `${date} 的心情是 ${mood}` : `今天你选择的心情是 ${mood}`;
+      document.getElementById("mood-record").innerText = msg;
+    }
+
+    // 任务
+    function addTodo() {
+      const input = document.getElementById("todo-input");
+      if (input.value.trim()) {
+        const li = document.createElement("li");
+        li.textContent = input.value;
+        document.getElementById("todo-list").appendChild(li);
+        input.value = "";
+      }
+    }
+
+    // 留言板
+    function postMessage() {
+      const val = document.getElementById("msg-input").value;
+      if (val.trim()) {
+        const div = document.createElement("div");
+        div.textContent = val;
+        document.getElementById("msg-board").appendChild(div);
+        document.getElementById("msg-input").value = "";
+      }
+    }
+  </script>
+</body>
+</html>
