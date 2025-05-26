@@ -4,33 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>小星的小窝</title>
-  <!-- 可爱像素字体 -->
+  <!-- 像素可爱字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(120deg, #ffecf7 0%, #e0e8ff 100%);
+      background: linear-gradient(120deg, #ffd6fa 0%, #b5dfff 100%);
       font-family: 'Press Start 2P', 'Comic Sans MS', cursive, sans-serif;
       color: #48406d;
       overflow-x: hidden;
     }
     .container {
       max-width: 420px;
-      margin: 32px auto 24px auto;
-      padding: 1.3rem 0.7rem 1.3rem 0.7rem;
+      margin: 38px auto 28px auto;
+      padding: 1.3rem 0.8rem 1.3rem 0.8rem;
       border-radius: 24px;
-      background: rgba(255,255,255,0.91);
-      box-shadow: 0 4px 32px #e0b3fc55, 0 0 0 3px #ffe6ff85;
-      border: 2.5px solid #a4c7f7;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 4px 32px #e0b3fc33, 0 0 0 3px #ffe6ff55;
+      border: 2.5px solid #9bc6ed;
       text-align: center;
       position: relative;
       z-index: 2;
     }
     h1 {
-      font-size: 1.05rem;
-      color: #e880b4;
-      text-shadow: 1px 1px 0 #fff8;
+      font-size: 1.08rem;
+      color: #ec71c3;
+      text-shadow: 1px 1px 0 #fff9;
       margin-bottom: 1.2rem;
       font-family: 'Press Start 2P', cursive, sans-serif;
       letter-spacing: 1px;
@@ -55,7 +55,7 @@
       60% { transform: scale(0.95);}
     }
     .diary, .calendar, .todo, .messages {
-      background: #f6f2fcde;
+      background: #f7f3fcf1;
       border-radius: 18px;
       padding: 0.9rem 0.7rem;
       margin: 1rem 0;
@@ -120,30 +120,6 @@
     }
     ul { list-style: none; padding: 0; }
     ul li { margin: 5px 0; }
-    /* 星星粒子 */
-    .star {
-      position: absolute;
-      pointer-events: none;
-      width: 16px; height: 16px;
-      background: transparent;
-      z-index: 10;
-      filter: drop-shadow(0 1px 7px #ffbbfa99);
-      user-select: none;
-      animation: star-move 1.4s linear forwards;
-    }
-    .star:after {
-      content: '★';
-      color: #ffe8fd;
-      font-size: 16px;
-      opacity: 0.88;
-      text-shadow: 1px 1px 2px #c1eaff99, 0 0 10px #fff;
-    }
-    @keyframes star-move {
-      0% { opacity: 0; transform: scale(1) translateY(0);}
-      10% { opacity: 1;}
-      90% { opacity: 1;}
-      100% { opacity: 0; transform: scale(1.3) translateY(-16px);}
-    }
     /* 脚印 */
     .paw {
       position: absolute;
@@ -152,7 +128,7 @@
       pointer-events: none;
       opacity: 0.96;
       z-index: 20;
-      animation: pawfade 2.2s linear forwards;
+      animation: pawfade 2.1s linear forwards;
       user-select: none;
     }
     @keyframes pawfade {
@@ -180,16 +156,13 @@
         您的浏览器不支持音频播放。
       </audio>
     </div>
-    <!-- 闷墩眨眼动图，支持点按眨眼 -->
-    <img src="https://cdn.jsdelivr.net/gh/weitu-diary/xiaomao-diary /mentun_blink.gif" class="mentun" alt="闷墩儿” id="mentun" />
+    <!-- 闷墩眨眼动图，点按眨眼 -->
+    <img src="https://cdn.jsdelivr.net/gh/weitu-diary/xiaomao-diary/mentun_blink.gif" class="mentun" alt="闷墩儿" id="mentun" />
     <div class="calendar">
       <h2>记录心情</h2>
       <input type="date" id="calendar" />
       <select id="mood">
-        <option>开心</option>
-        <option>疲惫</option>
-        <option>暴躁</option>
-        <option>想哭</option>
+        <option>开心</option><option>疲惫</option><option>暴躁</option><option>想哭</option>
       </select>
       <button onclick="recordMood()">记录</button>
       <div id="mood-record"></div>
@@ -208,24 +181,6 @@
     </div>
   </div>
   <script>
-    // 星星粒子
-    function createStar(x, y) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.left = x - 7 + 'px';
-      star.style.top = y - 7 + 'px';
-      document.body.appendChild(star);
-      setTimeout(() => star.remove(), 1300);
-    }
-    document.body.addEventListener('click', e => {
-      // 只在交互区域出现星星
-      if (e.target.tagName === 'BUTTON' || e.target.classList.contains('mentun')) {
-        for (let i = 0; i < 3; i++) {
-          setTimeout(() => createStar(e.clientX + Math.random()*22-11, e.clientY + Math.random()*14-7), i*80);
-        }
-      }
-    });
-
     // 脚印动画
     function showPaw(x, y) {
       const paw = document.createElement('img');
@@ -234,7 +189,7 @@
       paw.style.left = (x-11)+'px';
       paw.style.top = (y-12)+'px';
       document.body.appendChild(paw);
-      setTimeout(() => paw.remove(), 2200);
+      setTimeout(() => paw.remove(), 2100);
     }
     document.body.addEventListener('click', e => {
       if (e.target.tagName === 'BUTTON' || e.target.classList.contains('mentun')) {
