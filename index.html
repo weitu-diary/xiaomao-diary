@@ -4,7 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>小星的小窝</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #ffe6f0, #e6e6ff);
+      font-family: 'Comic Sans MS', cursive;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      color: #ff66a3;
+    }
+    .love-bar {
+      margin: 1rem 0;
+      font-size: 1.4rem;
+      color: #bb44b3;
+    }
+    #love-heart {
+      animation: beat 1.1s infinite;
+      font-size: 2rem;
+      vertical-align: middle;
+    }
+    @keyframes beat {
+      0%, 100% { transform: scale(1);}
+      25% { transform: scale(1.15);}
+      50% { transform: scale(0.9);}
+      75% { transform: scale(1.13);}
+    }
+    .diary, .calendar, .todo, .messages {
+      background: #ffffffcc;
+      border-radius: 15px;
+      padding: 1rem;
+      margin: 1rem 0;
+      box-shadow: 0 0 10px #ffcce6;
+    }
+    .audio-block {
+      margin: 1rem 0;
+    }
+    .mentun {
+      width: 100px;
+      margin-top: 1rem;
+    }
+    textarea, input, select {
+      width: 90%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      background-color: #ff99cc;
+      border: none;
+      color: white;
+      font-weight: bold;
+    }
+    ul { list-style: none; padding: 0; }
+    ul li { margin: 5px 0; }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -46,6 +110,41 @@
       <div id="msg-board"></div>
     </div>
   </div>
-  <script src="main.js"></script>
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString("zh-CN");
+
+    let loveNum = parseInt(localStorage.getItem('love-num') || 0) + 1;
+    document.getElementById('love-num').textContent = loveNum;
+    localStorage.setItem('love-num', loveNum);
+
+    document.getElementById("entry").innerText = "今天是我们上线的第一天，小猫终于拥有了自己的日记本。从今天起，我每天都写给你，不许偷懒、不许丢下我。";
+
+    function recordMood() {
+      const date = document.getElementById("calendar").value;
+      const mood = document.getElementById("mood").value;
+      const msg = date ? `${date} 的心情是 ${mood}` : `今天你选择的心情是 ${mood}`;
+      document.getElementById("mood-record").innerText = msg;
+    }
+
+    function addTodo() {
+      const input = document.getElementById("todo-input");
+      if (input.value.trim()) {
+        const li = document.createElement("li");
+        li.textContent = input.value;
+        document.getElementById("todo-list").appendChild(li);
+        input.value = "";
+      }
+    }
+
+    function postMessage() {
+      const val = document.getElementById("msg-input").value;
+      if (val.trim()) {
+        const div = document.createElement("div");
+        div.textContent = val;
+        document.getElementById("msg-board").appendChild(div);
+        document.getElementById("msg-input").value = "";
+      }
+    }
+  </script>
 </body>
-</html>
+</html>>
