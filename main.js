@@ -1,5 +1,8 @@
-
 document.getElementById("date").textContent = new Date().toLocaleDateString("zh-CN");
+
+let loveNum = parseInt(localStorage.getItem('love-num') || 0) + 1;
+document.getElementById('love-num').textContent = loveNum;
+localStorage.setItem('love-num', loveNum);
 
 document.getElementById("entry").innerText = "今天是我们上线的第一天，小猫终于拥有了自己的日记本。从今天起，我每天都写给你，不许偷懒、不许丢下我。";
 
