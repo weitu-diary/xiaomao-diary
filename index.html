@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>小星的小窝</title>
-  <!-- 像素可爱字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
@@ -14,6 +13,16 @@
       font-family: 'Press Start 2P', 'Comic Sans MS', cursive, sans-serif;
       color: #48406d;
       overflow-x: hidden;
+      /* 添加梦幻粒子背景层 */
+      position: relative;
+    }
+    .bg-star {
+      pointer-events: none;
+      position: fixed;
+      z-index: 0;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
     }
     .container {
       max-width: 420px;
@@ -79,13 +88,14 @@
       transition: box-shadow 0.3s;
     }
     .mentun.blink {
-      filter: brightness(0.93) blur(1.5px);
-      animation: blink 0.22s;
+      animation: blinkMove 0.42s;
     }
-    @keyframes blink {
-      0% { filter: brightness(1);}
-      50% { filter: brightness(0.7) blur(2px);}
-      100% { filter: brightness(1);}
+    @keyframes blinkMove {
+      0% { filter: none; transform: none;}
+      12% { filter: brightness(0.7) blur(1px);}
+      25% { filter: none; transform: translateX(-5px) rotate(-4deg);}
+      60% { transform: translateX(8px) rotate(3deg);}
+      100% { filter: none; transform: none;}
     }
     textarea, input, select {
       font-family: inherit;
@@ -126,20 +136,39 @@
       width: 22px;
       height: 22px;
       pointer-events: none;
-      opacity: 0.96;
+      opacity: 0.93;
       z-index: 20;
-      animation: pawfade 2.1s linear forwards;
+      animation: pawfade 2.8s linear forwards;
       user-select: none;
     }
     @keyframes pawfade {
       0% { opacity: 0; transform: scale(0.6);}
       14% { opacity: 1;}
-      88% { opacity: 1;}
+      80% { opacity: 1;}
       100% { opacity: 0; transform: scale(1);}
+    }
+    /* 梦幻星星粒子 */
+    .bg-star span {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      font-size: 16px;
+      opacity: 0.7;
+      color: #ffd6fa;
+      text-shadow: 0 0 12px #fff7, 0 0 2px #e2c5f7;
+      animation: starfall 7s linear infinite;
+    }
+    @keyframes starfall {
+      0% { transform: translateY(-10px) scale(0.9);}
+      85% { opacity: 0.8;}
+      99% { opacity: 0.2;}
+      100% { transform: translateY(100vh) scale(1.2); opacity: 0;}
     }
   </style>
 </head>
 <body>
+  <!-- 梦幻背景星星 -->
+  <div class="bg-star"></div>
   <div class="container">
     <h1>阿砚写给小猫的日记</h1>
     <div class="love-bar">
@@ -181,27 +210,52 @@
     </div>
   </div>
   <script>
-    // 脚印动画
-    function showPaw(x, y) {
+    // ========== 梦幻背景星星自动飘落 ==========
+    function createBgStar() {
+      const bg = document.querySelector('.bg-star');
+      const star = document.createElement('span');
+      star.textContent = "★";
+      star.style.left = (Math.random()*100) + "vw";
+      star.style.top = "-20px";
+      star.style.fontSize = (12 + Math.random()*18) + "px";
+      star.style.opacity = (0.5 + Math.random()*0.45).toFixed(2);
+      bg.appendChild(star);
+      setTimeout(() => bg.removeChild(star), 7000);
+    }
+    setInterval(createBgStar, 750);
+
+    // ========== 猫脚印自动/手动飘落 ==========
+    function randomPaw() {
+      const w = window.innerWidth, h = window.innerHeight;
+      let x = 40 + Math.random()*(w-80), y = 100 + Math.random()*(h-180);
+      showPaw(x, y, true);
+    }
+    setInterval(randomPaw, 2400);
+
+    function showPaw(x, y, auto) {
       const paw = document.createElement('img');
       paw.className = 'paw';
       paw.src = 'https://cdn.jsdelivr.net/gh/weitu-diary/xiaomao-diary/paw.png';
       paw.style.left = (x-11)+'px';
       paw.style.top = (y-12)+'px';
+      if(auto) paw.style.opacity = '0.55';
       document.body.appendChild(paw);
-      setTimeout(() => paw.remove(), 2100);
+      setTimeout(() => paw.remove(), 2600);
     }
     document.body.addEventListener('click', e => {
-      if (e.target.tagName === 'BUTTON' || e.target.classList.contains('mentun')) {
-        showPaw(e.clientX, e.clientY);
+      if (
+        e.target.tagName === 'BUTTON' || 
+        e.target.classList.contains('mentun')
+      ) {
+        showPaw(e.clientX, e.clientY, false);
       }
     });
 
-    // 闷墩眨眼
+    // 闷墩眨眼+晃动
     const mentun = document.getElementById('mentun');
     mentun.addEventListener('click', ()=>{
       mentun.classList.add('blink');
-      setTimeout(()=>mentun.classList.remove('blink'), 250);
+      setTimeout(()=>mentun.classList.remove('blink'), 430);
     });
 
     // 日期、心动值
