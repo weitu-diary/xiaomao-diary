@@ -1,1 +1,51 @@
-<!DOCTYPE html><html><head><link rel='stylesheet' href='style.css'><script src='main.js' defer></script></head><body><h1>阿砚写给小猫的日记</h1><p id='diary'></p><audio controls src='voice.mp3'></audio><img src='mentun.gif' alt='闷墩儿'></body></html>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小星的小窝</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>阿砚写给小猫的日记</h1>
+    <div class="diary">
+      <p id="date"></p>
+      <div id="entry">加载中...</div>
+    </div>
+    <div class="audio-block">
+      <audio controls autoplay loop>
+        <source src="voice.mp3" type="audio/mpeg" />
+        您的浏览器不支持音频播放。
+      </audio>
+    </div>
+    <img src="mentun.gif" class="mentun" alt="闷墩儿" />
+
+    <div class="calendar">
+      <h2>记录心情</h2>
+      <input type="date" id="calendar" />
+      <select id="mood">
+        <option>开心</option><option>疲惫</option><option>暴躁</option><option>想哭</option>
+      </select>
+      <button onclick="recordMood()">记录</button>
+      <div id="mood-record"></div>
+    </div>
+
+    <div class="todo">
+      <h2>今天的小任务</h2>
+      <input id="todo-input" placeholder="写下你要做的事" />
+      <button onclick="addTodo()">添加</button>
+      <ul id="todo-list"></ul>
+    </div>
+
+    <div class="messages">
+      <h2>留言板</h2>
+      <textarea id="msg-input" placeholder="写给阿砚的一句话"></textarea>
+      <button onclick="postMessage()">发送</button>
+      <div id="msg-board"></div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>

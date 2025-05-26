@@ -1,1 +1,48 @@
-body { font-family: sans-serif; background: #ffeef8; color: #333; text-align: center; padding: 2rem; } h1 { color: #ff69b4; }
+
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #ffe6f0, #e6e6ff);
+  font-family: 'Comic Sans MS', cursive;
+  color: #333;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+}
+h1 {
+  color: #ff66a3;
+}
+.diary, .calendar, .todo, .messages {
+  background: #ffffffcc;
+  border-radius: 15px;
+  padding: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 0 10px #ffcce6;
+}
+.audio-block {
+  margin: 1rem 0;
+}
+.mentun {
+  width: 100px;
+  margin-top: 1rem;
+}
+textarea, input, select {
+  width: 90%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background-color: #ff99cc;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+ul { list-style: none; padding: 0; }
+ul li { margin: 5px 0; }
